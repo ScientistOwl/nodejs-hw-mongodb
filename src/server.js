@@ -1,27 +1,35 @@
 const express = require('express');
 const cors = require('cors');
+const contactsRoutes = require('./routes/contactRoutes');
 const { initMongoConnection } = require('./db/initMongoConnection');
-const contactRoutes = require('./routes/contactRoutes');
-const swaggerUi = require('swagger-ui-express');
-const swaggerSpecs = require('./config/swaggerConfig');
+const pino = require('pino');
+const dotenv = require('dotenv');
+
+dotenv.config();
+const logger = pino({ level: 'info' });
 
 const setupServer = async () => {
-  await initMongoConnection();
+  try {
+    await initMongoConnection();
 
-  const app = express();
-  app.use(cors());
-  app.use(express.json());
+    const app = express();
+    app.use(cors());
+    app.use(express.json());
 
-  app.use('/api/contacts', contactRoutes);
-  app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpecs));
+    app.use('/api/contacts', contactsRoutes);
 
-  const PORT = process.env.PORT || 3000;
-  app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-    console.log(
-      `Swagger API Docs available at http://localhost:${PORT}/api-docs`,
-    );
-  });
+    app.use((req, res) => {
+      res.status(404).json({ message: 'Not found' });
+    });
+
+    const PORT = process.env.PORT || 3000;
+    app.listen(PORT, () => {
+      logger.info(`Server is running on port ${PORT}`);
+    });
+  } catch (error) {
+    logger.error(`Server error: ${error.message}`);
+    process.exit(1);
+  }
 };
 
 module.exports = { setupServer };
