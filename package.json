@@ -1,21 +1,36 @@
 {
-  "name": "nodejs-basics",
+  "name": "nodejs-hw-mongodb",
   "version": "1.0.0",
   "description": "",
-  "type": "module",
-  "main": "src/index.js",
+  "main": "index.js",
   "scripts": {
-    "lint": "eslint src/**/*.js",
-    "start": "node ./src/index.js",
-    "dev": "nodemon src/index.js"
+    "dev": "nodemon src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ScientistOwl/nodejs-hw-mongodb.git"
   },
   "keywords": [],
-  "author": "Alexander Repeta <a.repeta@goit.global>",
+  "author": "",
   "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/ScientistOwl/nodejs-hw-mongodb/issues"
+  },
+  "homepage": "https://github.com/ScientistOwl/nodejs-hw-mongodb#readme",
   "devDependencies": {
-    "@eslint/js": "^9.2.0",
-    "eslint": "^9.2.0",
-    "globals": "^15.1.0",
-    "nodemon": "^3.1.0"
+    "eslint": "^9.28.0",
+    "nodemon": "^3.1.10"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "express-validator": "^7.2.1",
+    "mongoose": "^8.15.1",
+    "pino": "^9.7.0",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.1"
   }
 }
