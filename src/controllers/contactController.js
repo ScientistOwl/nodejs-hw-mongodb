@@ -3,7 +3,7 @@ const Contact = require('../models/contactModel');
 
 const getContacts = async (req, res) => {
   try {
-    const { name, contactType, isFavourite, page = 1, limit = 10 } = req.query;
+    const { name, contactType, isFavourite, page = 1, limit = 100 } = req.query;
     let filter = {};
 
     if (name) filter.name = { $regex: new RegExp(name, 'i') };
@@ -50,6 +50,18 @@ const createContact = async (req, res) => {
   }
 };
 
+const getContactById = async (req, res) => {
+  try {
+    const contact = await Contact.findById(req.params.id).lean();
+    if (!contact) {
+      return res.status(404).json({ message: 'Contact not found' });
+    }
+    res.status(200).json(contact);
+  } catch (error) {
+    res.status(400).json({ message: error.message });
+  }
+};
+
 const updateContact = async (req, res) => {
   try {
     const updatedContact = await Contact.findByIdAndUpdate(
@@ -83,4 +95,10 @@ const deleteContact = async (req, res) => {
   }
 };
 
-module.exports = { getContacts, createContact, updateContact, deleteContact };
+module.exports = {
+  getContacts,
+  createContact,
+  getContactById,
+  updateContact,
+  deleteContact,
+};

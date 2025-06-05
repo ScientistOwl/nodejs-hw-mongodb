@@ -13,7 +13,7 @@ const contacts = [
   {
     name: 'Dmytro Boyko',
     phone: '+380000000002',
-    email: null,
+    email: 'dmytro2@example.com',
     isFavourite: false,
     contactType: 'personal',
   },
@@ -27,7 +27,7 @@ const contacts = [
   {
     name: 'Yulia Shevchenko',
     phone: '+380000000004',
-    email: null,
+    email: 'yulia4@example.com',
     isFavourite: false,
     contactType: 'personal',
   },
@@ -41,7 +41,7 @@ const contacts = [
   {
     name: 'Anna Kovalenko',
     phone: '+380000000006',
-    email: null,
+    email: 'anna6@example.com',
     isFavourite: false,
     contactType: 'home',
   },
@@ -55,7 +55,7 @@ const contacts = [
   {
     name: 'Maria Petrenko',
     phone: '+380000000008',
-    email: null,
+    email: 'maria8@example.com',
     isFavourite: false,
     contactType: 'personal',
   },
@@ -68,8 +68,8 @@ const contacts = [
   },
   {
     name: 'Kateryna Kovalchuk',
-    phone: '+3800000000010',
-    email: null,
+    phone: '+380000000010',
+    email: 'kateryna10@example.com',
     isFavourite: false,
     contactType: 'personal',
   },
@@ -81,8 +81,13 @@ const seedContacts = async () => {
       `mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PASSWORD}@${process.env.MONGODB_URL}/${process.env.MONGODB_DB}?retryWrites=true&w=majority`,
     );
 
-    await Contact.insertMany(contacts);
-    console.log('Contacts added successfully!');
+    console.log('Connected to MongoDB');
+
+    await Contact.deleteMany();
+    console.log('Database cleaned!');
+
+    const insertedContacts = await Contact.insertMany(contacts);
+    console.log(`Successfully inserted ${insertedContacts.length} contacts`);
 
     mongoose.connection.close();
   } catch (error) {
