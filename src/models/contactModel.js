@@ -1,9 +1,9 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const contactSchema = new mongoose.Schema(
   {
     name: { type: String, required: true },
-    phone: { type: String, required: true },
+    phoneNumber: { type: String, required: true },
     email: { type: String, sparse: true },
     isFavourite: { type: Boolean, default: false },
     contactType: {
@@ -17,4 +17,4 @@ const contactSchema = new mongoose.Schema(
 );
 
 const Contact = mongoose.model('Contact', contactSchema);
-module.exports = Contact;
+export default Contact;
