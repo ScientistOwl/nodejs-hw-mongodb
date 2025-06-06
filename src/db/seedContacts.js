@@ -1,6 +1,8 @@
 import mongoose from 'mongoose';
 import Contact from '../models/contactModel.js';
 import fs from 'fs';
+import dotenv from 'dotenv';
+dotenv.config();
 
 const seedContacts = async () => {
   try {
