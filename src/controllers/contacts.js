@@ -4,7 +4,11 @@ import createError from 'http-errors';
 export const getContacts = async (req, res, next) => {
   try {
     const contacts = await Contact.find();
-    res.status(200).json({ status: 200, data: contacts });
+    res.status(200).json({
+      status: 200,
+      message: 'Successfully retrieved contacts!',
+      data: contacts,
+    });
   } catch (error) {
     next(error);
   }
@@ -16,7 +20,11 @@ export const getContactById = async (req, res, next) => {
     if (!contact) {
       throw createError(404, 'Contact not found');
     }
-    res.status(200).json({ status: 200, data: contact });
+    res.status(200).json({
+      status: 200,
+      message: 'Successfully retrieved contact!',
+      data: contact,
+    });
   } catch (error) {
     next(error);
   }
@@ -68,7 +76,10 @@ export const deleteContact = async (req, res, next) => {
     if (!contact) {
       throw createError(404, 'Contact not found');
     }
-    res.status(204).send();
+    res.status(200).json({
+      status: 200,
+      message: 'Successfully deleted contact!',
+    });
   } catch (error) {
     next(error);
   }
