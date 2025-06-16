@@ -3,11 +3,51 @@ import createError from 'http-errors';
 import ctrlWrapper from '../utils/ctrlWrapper.js';
 
 const getContacts = async (req, res) => {
-  const contacts = await Contact.find();
+  const {
+    page = 1,
+    perPage = 10,
+    sortBy = 'name',
+    sortOrder = 'asc',
+    isFavourite,
+    contactType,
+  } = req.query;
+
+  const currentPage = parseInt(page, 10);
+  const limit = parseInt(perPage, 10);
+  const skip = (currentPage - 1) * limit;
+
+  const sortDirection = sortOrder === 'desc' ? -1 : 1;
+  const sortOptions = { [sortBy]: sortDirection };
+
+  const filter = {};
+  if (isFavourite !== undefined) {
+    filter.isFavourite = isFavourite === 'true';
+  }
+  if (contactType) {
+    filter.contactType = contactType;
+  }
+
+  const [contacts, totalItems] = await Promise.all([
+    Contact.find(filter).sort(sortOptions).skip(skip).limit(limit),
+    Contact.countDocuments(filter),
+  ]);
+
+  const totalPages = Math.ceil(totalItems / limit);
+  const hasPreviousPage = currentPage > 1;
+  const hasNextPage = currentPage < totalPages;
+
   res.status(200).json({
     status: 200,
-    message: 'Successfully retrieved contacts!',
-    data: contacts,
+    message: 'Successfully found contacts!',
+    data: {
+      data: contacts,
+      page: currentPage,
+      perPage: limit,
+      totalItems,
+      totalPages,
+      hasPreviousPage,
+      hasNextPage,
+    },
   });
 };
 
