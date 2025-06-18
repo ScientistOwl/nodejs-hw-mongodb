@@ -2,7 +2,10 @@ import express from 'express';
 import contactsController from '../controllers/contacts.js';
 import validateBody from '../middlewares/validateBody.js';
 import isValidId from '../middlewares/isValidId.js';
-import contactSchema from '../schemas/contactSchema.js';
+import {
+  contactSchema,
+  updateContactSchema,
+} from '../schemas/contactSchema.js';
 
 const router = express.Router();
 
@@ -12,7 +15,7 @@ router.post('/', validateBody(contactSchema), contactsController.createContact);
 router.patch(
   '/:contactId',
   isValidId,
-  validateBody(contactSchema),
+  validateBody(updateContactSchema),
   contactsController.updateContact,
 );
 router.delete('/:contactId', isValidId, contactsController.deleteContact);
