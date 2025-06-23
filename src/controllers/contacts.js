@@ -1,5 +1,10 @@
-import Contact from '../models/Contact.js';
-import createError from 'http-errors';
+import {
+  getAllContacts,
+  getContactById,
+  createContact,
+  updateContact,
+  deleteContact,
+} from '../services/contacts.js';
 import ctrlWrapper from '../utils/ctrlWrapper.js';
 
 const getContacts = async (req, res) => {
@@ -15,22 +20,22 @@ const getContacts = async (req, res) => {
   const currentPage = parseInt(page, 10);
   const limit = parseInt(perPage, 10);
   const skip = (currentPage - 1) * limit;
-
   const sortDirection = sortOrder === 'desc' ? -1 : 1;
   const sortOptions = { [sortBy]: sortDirection };
 
-  const filter = {};
+  const filters = {};
   if (isFavourite !== undefined) {
-    filter.isFavourite = isFavourite === 'true';
+    filters.isFavourite = isFavourite === 'true';
   }
   if (contactType) {
-    filter.contactType = contactType;
+    filters.contactType = contactType;
   }
 
-  const [contacts, totalItems] = await Promise.all([
-    Contact.find(filter).sort(sortOptions).skip(skip).limit(limit),
-    Contact.countDocuments(filter),
-  ]);
+  const { contacts, totalItems } = await getAllContacts(req.user.id, filters, {
+    skip,
+    limit,
+    sortOptions,
+  });
 
   const totalPages = Math.ceil(totalItems / limit);
   const hasPreviousPage = currentPage > 1;
@@ -38,7 +43,7 @@ const getContacts = async (req, res) => {
 
   res.status(200).json({
     status: 200,
-    message: 'Successfully found contacts!',
+    message: "All user's contacts returned successfully!",
     data: {
       data: contacts,
       page: currentPage,
@@ -51,11 +56,8 @@ const getContacts = async (req, res) => {
   });
 };
 
-const getContactById = async (req, res) => {
-  const contact = await Contact.findById(req.params.contactId);
-  if (!contact) {
-    throw createError(404, 'Contact not found');
-  }
+const getById = async (req, res) => {
+  const contact = await getContactById(req.params.contactId, req.user.id);
   res.status(200).json({
     status: 200,
     message: 'Successfully retrieved contact!',
@@ -63,51 +65,37 @@ const getContactById = async (req, res) => {
   });
 };
 
-const createContact = async (req, res) => {
-  const { name, phoneNumber, email, isFavourite, contactType } = req.body;
-  const newContact = await Contact.create({
-    name,
-    phoneNumber,
-    email,
-    isFavourite,
-    contactType,
-  });
+const create = async (req, res) => {
+  const contact = await createContact(req.body, req.user.id);
   res.status(201).json({
     status: 201,
     message: 'Successfully created a contact!',
-    data: newContact,
+    data: contact,
   });
 };
 
-const updateContact = async (req, res) => {
-  const updatedContact = await Contact.findByIdAndUpdate(
+const update = async (req, res) => {
+  const contact = await updateContact(
     req.params.contactId,
     req.body,
-    { new: true },
+    req.user.id,
   );
-  if (!updatedContact) {
-    throw createError(404, 'Contact not found');
-  }
   res.status(200).json({
     status: 200,
     message: 'Successfully patched a contact!',
-    data: updatedContact,
+    data: contact,
   });
 };
 
-const deleteContact = async (req, res) => {
-  const contact = await Contact.findByIdAndDelete(req.params.contactId);
-  if (!contact) {
-    throw createError(404, 'Contact not found');
-  }
-
+const remove = async (req, res) => {
+  await deleteContact(req.params.contactId, req.user.id);
   res.status(204).send();
 };
 
 export default {
   getContacts: ctrlWrapper(getContacts),
-  getContactById: ctrlWrapper(getContactById),
-  createContact: ctrlWrapper(createContact),
-  updateContact: ctrlWrapper(updateContact),
-  deleteContact: ctrlWrapper(deleteContact),
+  getContactById: ctrlWrapper(getById),
+  createContact: ctrlWrapper(create),
+  updateContact: ctrlWrapper(update),
+  deleteContact: ctrlWrapper(remove),
 };
