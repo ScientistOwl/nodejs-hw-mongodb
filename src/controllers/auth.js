@@ -1,6 +1,9 @@
 import { register, login, refresh, logout } from '../services/auth.js';
 import ctrlWrapper from '../utils/ctrlWrapper.js';
 import createError from 'http-errors';
+import jwt from 'jsonwebtoken';
+import User from '../models/User.js';
+import sendEmail from '../utils/emailSender.js';
 
 const registerUser = async (req, res) => {
   const newUser = await register(req.body);
@@ -71,9 +74,43 @@ const logoutUser = async (req, res) => {
   res.status(204).send();
 };
 
+const sendResetEmail = async (req, res) => {
+  let { email } = req.body;
+
+  email = email.trim().toLowerCase();
+
+  const user = await User.findOne({ email });
+  if (!user) {
+    throw createError(404, 'User not found!');
+  }
+
+  const token = jwt.sign({ email }, process.env.JWT_SECRET, {
+    expiresIn: '5m',
+  });
+  const resetLink = `${process.env.APP_DOMAIN}/reset-password?token=${token}`;
+
+  const html = `
+    <p>To reset your password, click the link below:</p>
+    <a href="${resetLink}">${resetLink}</a>
+  `;
+
+  try {
+    await sendEmail(email, 'Reset your password', html);
+  } catch {
+    throw createError(500, 'Failed to send the email, please try again later.');
+  }
+
+  res.status(200).json({
+    status: 200,
+    message: 'Reset password email has been successfully sent.',
+    data: {},
+  });
+};
+
 export default {
   registerUser: ctrlWrapper(registerUser),
   loginUser: ctrlWrapper(loginUser),
   refreshSession: ctrlWrapper(refreshSession),
   logoutUser: ctrlWrapper(logoutUser),
+  sendResetEmail: ctrlWrapper(sendResetEmail),
 };
