@@ -1,5 +1,7 @@
+import 'dotenv/config.js';
 import express from 'express';
 import cookieParser from 'cookie-parser';
+
 import contactsRouter from './routers/contacts.js';
 import authRouter from './routers/auth.js';
 import usersRouter from './routers/users.js';

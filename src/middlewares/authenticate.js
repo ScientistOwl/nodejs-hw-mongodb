@@ -12,8 +12,13 @@ const authenticate = async (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const user = await User.findById(decoded.sub);
 
+    const userId = decoded.sub || decoded.id || decoded._id;
+    if (!userId) {
+      return next(createError(401, 'Invalid token payload'));
+    }
+
+    const user = await User.findById(userId);
     if (!user) {
       return next(createError(401, 'Not authorized'));
     }
