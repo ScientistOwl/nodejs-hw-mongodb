@@ -6,6 +6,7 @@ import {
   deleteContact,
 } from '../services/contacts.js';
 import ctrlWrapper from '../utils/ctrlWrapper.js';
+import cloudinary from '../utils/cloudinary.js';
 
 const getContacts = async (req, res) => {
   const {
@@ -66,7 +67,21 @@ const getById = async (req, res) => {
 };
 
 const create = async (req, res) => {
-  const contact = await createContact(req.body, req.user.id);
+  let photoUrl = '';
+  if (req.file) {
+    const uploaded = await cloudinary.uploader.upload(req.file.path, {
+      folder: 'contacts',
+      overwrite: true,
+    });
+    photoUrl = uploaded.secure_url;
+  }
+
+  const contactData = {
+    ...req.body,
+    photo: photoUrl,
+  };
+
+  const contact = await createContact(contactData, req.user.id);
   res.status(201).json({
     status: 201,
     message: 'Successfully created a contact!',
@@ -75,11 +90,30 @@ const create = async (req, res) => {
 };
 
 const update = async (req, res) => {
+  let photoUrl = null;
+
+  if (req.file) {
+    const uploaded = await cloudinary.uploader.upload(req.file.path, {
+      folder: 'contacts',
+      overwrite: true,
+    });
+    photoUrl = uploaded.secure_url;
+  }
+
+  const contactData = {
+    ...req.body,
+  };
+
+  if (photoUrl !== null) {
+    contactData.photo = photoUrl;
+  }
+
   const contact = await updateContact(
     req.params.contactId,
-    req.body,
+    contactData,
     req.user.id,
   );
+
   res.status(200).json({
     status: 200,
     message: 'Successfully patched a contact!',
