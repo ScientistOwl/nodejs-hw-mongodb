@@ -1,19 +1,32 @@
-import { Resend } from 'resend';
+import nodemailer from 'nodemailer';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+const transport = nodemailer.createTransport({
+  host: 'smtp.ukr.net',
+  port: 465,
+  secure: true,
+  auth: {
+    user: process.env.SMTP_USER,
+    pass: process.env.SMTP_PASS,
+  },
+});
 
 const sendEmail = async (to, subject, html) => {
   try {
-    const data = await resend.emails.send({
-      from: process.env.RESEND_FROM,
+    const info = await transport.sendMail({
+      from: process.env.SMTP_USER,
       to,
       subject,
       html,
     });
-    console.log('✅ Resend email sent:', data);
+
+    console.log('✅ Email sent via Ukr.net SMTP:');
+    console.log('→ to:', to);
+    console.log('→ messageId:', info.messageId);
+
+    return info;
   } catch (error) {
-    console.error('❌ Resend error:', error);
-    throw new Error('Failed to send email via Resend');
+    console.error('❌ SMTP email error:', error);
+    throw new Error('Failed to send email via Ukr.net SMTP');
   }
 };
 
