@@ -1,0 +1,28 @@
+type: object
+properties:
+  _id:
+    type: string
+    example: 64d018d0c9f1bc2f60787400
+  name:
+    type: string
+    example: Andrii
+  email:
+    type: string
+    format: email
+    example: andrii@example.com
+  phone:
+    type: string
+    example: '+380970001122'
+  favorite:
+    type: boolean
+    example: true
+  createdAt:
+    type: string
+    format: date-time
+  updatedAt:
+    type: string
+    format: date-time
+required:
+  - name
+  - email
+  - phone

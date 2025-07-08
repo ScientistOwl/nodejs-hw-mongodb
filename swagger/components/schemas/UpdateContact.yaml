@@ -1,0 +1,15 @@
+type: object
+properties:
+  name:
+    type: string
+    example: Andrii Updated
+  email:
+    type: string
+    format: email
+    example: new@example.com
+  phone:
+    type: string
+    example: '+380960001122'
+  favorite:
+    type: boolean
+    example: true
