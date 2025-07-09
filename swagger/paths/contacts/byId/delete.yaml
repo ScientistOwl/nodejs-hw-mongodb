@@ -20,10 +20,10 @@ responses:
     content:
       application/json:
         schema:
-          $ref: '../../../components/responses/NotFound.yaml'
+          $ref: ../../../components/responses/NotFound.yaml
   '401':
     description: Unauthorized access
     content:
       application/json:
         schema:
-          $ref: '../../../components/responses/Unauthorized.yaml'
+          $ref: ../../../components/responses/Unauthorized.yaml

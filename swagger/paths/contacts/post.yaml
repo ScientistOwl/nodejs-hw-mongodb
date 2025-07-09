@@ -2,7 +2,7 @@ tags:
   - Contacts
 summary: Create a new contact
 operationId: createContact
-description: Add a new contact to the user's contact list.
+description: Add a new contact to the user's list.
 security:
   - bearerAuth: []
 requestBody:
@@ -10,23 +10,23 @@ requestBody:
   content:
     application/json:
       schema:
-        $ref: '../../components/schemas/NewContact.yaml'
+        $ref: ../../components/schemas/NewContact.yaml
 responses:
   '201':
-    description: Contact successfully created
+    description: Contact created successfully
     content:
       application/json:
         schema:
-          $ref: '../../../components/schemas/Contact.yaml'
+          $ref: ../../components/schemas/Contact.yaml
   '400':
     description: Invalid input data
     content:
       application/json:
         schema:
-          $ref: '../../../components/responses/BadRequest.yaml'
+          $ref: ../../components/responses/BadRequest.yaml
   '401':
     description: Unauthorized access
     content:
       application/json:
         schema:
-          $ref: '../../../components/responses/Unauthorized.yaml'
+          $ref: ../../components/responses/Unauthorized.yaml

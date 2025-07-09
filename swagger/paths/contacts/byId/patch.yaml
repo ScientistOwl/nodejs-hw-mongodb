@@ -17,29 +17,29 @@ requestBody:
   content:
     application/json:
       schema:
-        $ref: '../../../components/schemas/UpdateContact.yaml'
+        $ref: ../../../components/schemas/UpdateContact.yaml
 responses:
   '200':
     description: Contact successfully updated
     content:
       application/json:
         schema:
-          $ref: '../../../components/schemas/Contact.yaml'
+          $ref: ../../../components/schemas/Contact.yaml
   '400':
     description: Invalid update payload
     content:
       application/json:
         schema:
-          $ref: '../../../components/responses/BadRequest.yaml'
+          $ref: ../../../components/responses/BadRequest.yaml
   '404':
     description: Contact not found
     content:
       application/json:
         schema:
-          $ref: '../../../components/responses/NotFound.yaml'
+          $ref: ../../../components/responses/NotFound.yaml
   '401':
     description: Unauthorized access
     content:
       application/json:
         schema:
-          $ref: '../../../components/responses/Unauthorized.yaml'
+          $ref: ../../../components/responses/Unauthorized.yaml
