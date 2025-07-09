@@ -1,8 +1,12 @@
-import express from 'express';
+import { readFileSync } from 'fs';
+import { Router } from 'express';
 import swaggerUi from 'swagger-ui-express';
-import swaggerDocument from '../docs/swagger.json' assert { type: 'json' };
 
-const router = express.Router();
+const router = Router();
+
+const swaggerDocument = JSON.parse(
+  readFileSync(new URL('../docs/swagger.json', import.meta.url)),
+);
 
 router.use('/', swaggerUi.serve);
 router.get('/', swaggerUi.setup(swaggerDocument));
