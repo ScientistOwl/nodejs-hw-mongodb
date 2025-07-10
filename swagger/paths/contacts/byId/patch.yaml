@@ -1,45 +1,41 @@
 tags:
   - Contacts
-summary: Update contact by ID
-operationId: updateContactById
-description: Modify an existing contact's details.
+summary: Update contact
+description: Update contact by ID with image
+operationId: updateContact
 security:
   - bearerAuth: []
+
 parameters:
   - name: contactId
     in: path
     required: true
     schema:
       type: string
-    description: Unique ID of the contact
+
 requestBody:
   required: true
   content:
-    application/json:
+    multipart/form-data:
       schema:
         $ref: ../../../components/schemas/UpdateContact.yaml
+
 responses:
   '200':
-    description: Contact successfully updated
+    description: Contact updated
     content:
       application/json:
         schema:
-          $ref: ../../../components/schemas/Contact.yaml
+          type: object
+          properties:
+            message:
+              type: string
+              example: 'Contact updated successfully'
+            contact:
+              $ref: ../../../components/schemas/Contact.yaml
   '400':
-    description: Invalid update payload
-    content:
-      application/json:
-        schema:
-          $ref: ../../../components/responses/BadRequest.yaml
-  '404':
-    description: Contact not found
-    content:
-      application/json:
-        schema:
-          $ref: ../../../components/responses/NotFound.yaml
+    $ref: ../../../components/responses/BadRequest.yaml
   '401':
-    description: Unauthorized access
-    content:
-      application/json:
-        schema:
-          $ref: ../../../components/responses/Unauthorized.yaml
+    $ref: ../../../components/responses/Unauthorized.yaml
+  '404':
+    $ref: ../../../components/responses/NotFound.yaml

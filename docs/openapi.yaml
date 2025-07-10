@@ -3,20 +3,15 @@ openapi: 3.1.0
 info:
   version: 1.0.0
   title: Contact Management API
-  description: >
-    This API allows users to register, authenticate, and manage their contacts,
-    including operations such as creating, updating, deleting, and retrieving individual records.
-  license:
-    name: Apache 2.0
-    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  description: API for managing contacts, with authentication and pagination.
 
 tags:
   - name: Contacts
-    description: Operations for managing contact records
+    description: Operations with contacts
 
 servers:
   - url: http://localhost:3000
-  - url: https://nodejs-hw-mongodb-1-zsii.onrender.com
+  - url: https://nodejs-hw-mongodb-1-zsii.onrender.com/
 
 paths:
   /contacts:

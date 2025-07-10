@@ -2,14 +2,16 @@ type: object
 properties:
   name:
     type: string
-    example: Andrii Updated
+    example: 'Updated Name'
   email:
     type: string
-    format: email
-    example: new@example.com
+    example: 'updated@example.com'
   phone:
     type: string
-    example: '+380960001122'
+    example: '+380987654321'
+  avatar:
+    type: string
+    format: binary
   favorite:
     type: boolean
     example: true
