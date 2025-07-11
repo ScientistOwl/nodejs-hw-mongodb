@@ -5,19 +5,23 @@ properties:
     example: '60d0fe4f5311236168a109ca'
   name:
     type: string
-    example: 'Andrii'
+    example: 'Alice Smith'
+  phoneNumber:
+    type: string
+    example: '+380123456789'
   email:
     type: string
-    example: 'Andrii@example.com'
-  phone:
+    example: 'alice@example.com'
+  contactType:
     type: string
-    example: '+123456789'
-  avatarURL:
-    type: string
-    example: 'https://res.cloudinary.com/your-cloud/image/upload/avatar.jpg'
-  favorite:
+    enum: [work, home, personal]
+    example: 'personal'
+  isFavourite:
     type: boolean
-    example: true
-  owner:
+    example: false
+  photo:
+    type: string
+    example: 'https://res.cloudinary.com/demo/image/upload/photo.jpg'
+  userId:
     type: string
     example: '60d0fe4f5311236168a10999'

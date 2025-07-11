@@ -1,8 +1,8 @@
 tags:
   - Contacts
-summary: Update contact
-description: Update contact by ID with image
+summary: Update a contact by ID
 operationId: updateContact
+description: Modify contact fields and optionally upload a new photo
 security:
   - bearerAuth: []
 
@@ -12,6 +12,7 @@ parameters:
     required: true
     schema:
       type: string
+      example: 60d0fe4f5311236168a109ca
 
 requestBody:
   required: true
@@ -22,17 +23,11 @@ requestBody:
 
 responses:
   '200':
-    description: Contact updated
+    description: Contact updated successfully
     content:
       application/json:
         schema:
-          type: object
-          properties:
-            message:
-              type: string
-              example: 'Contact updated successfully'
-            contact:
-              $ref: ../../../components/schemas/Contact.yaml
+          $ref: ../../../components/responses/ContactResponse.yaml
   '400':
     $ref: ../../../components/responses/BadRequest.yaml
   '401':

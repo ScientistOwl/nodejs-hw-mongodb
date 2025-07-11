@@ -1,8 +1,8 @@
 tags:
   - Contacts
-summary: Create new contact
-description: Add a new contact with image
+summary: Create a new contact
 operationId: createContact
+description: Add a new contact with optional photo
 security:
   - bearerAuth: []
 
@@ -11,31 +11,15 @@ requestBody:
   content:
     multipart/form-data:
       schema:
-        type: object
-        properties:
-          name:
-            type: string
-          email:
-            type: string
-          phone:
-            type: string
-          avatar:
-            type: string
-            format: binary
+        $ref: ../../components/schemas/NewContact.yaml
 
 responses:
   '201':
-    description: Contact created
+    description: Contact created successfully
     content:
       application/json:
         schema:
-          type: object
-          properties:
-            message:
-              type: string
-              example: 'Contact created successfully'
-            contact:
-              $ref: ../../components/schemas/Contact.yaml
+          $ref: ../../components/responses/ContactResponse.yaml
   '400':
     $ref: ../../components/responses/BadRequest.yaml
   '401':

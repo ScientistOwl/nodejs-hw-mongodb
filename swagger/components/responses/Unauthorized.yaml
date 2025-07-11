@@ -1,9 +1,11 @@
-description: Unauthorized access
-content:
-  application/json:
-    schema:
-      type: object
-      properties:
-        message:
-          type: string
-          example: 'Unauthorized: Invalid token'
+type: object
+properties:
+  status:
+    type: integer
+    example: 401
+  message:
+    type: string
+    example: 'Unauthorized: Invalid or expired token'
+  data:
+    type: object
+    example: {}

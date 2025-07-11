@@ -1,8 +1,8 @@
 tags:
   - Contacts
-summary: Get all contacts
-description: Retrieve paginated contacts
+summary: Get all contacts with pagination
 operationId: getContacts
+description: Retrieve paginated list of user contacts
 security:
   - bearerAuth: []
 
@@ -13,13 +13,33 @@ parameters:
     schema:
       type: integer
       example: 1
-  - name: limit
+  - name: perPage
     in: query
     required: false
     schema:
       type: integer
       example: 10
-  - name: favorite
+  - name: sortBy
+    in: query
+    required: false
+    schema:
+      type: string
+      example: name
+  - name: sortOrder
+    in: query
+    required: false
+    schema:
+      type: string
+      enum: [asc, desc]
+      example: asc
+  - name: type
+    in: query
+    required: false
+    schema:
+      type: string
+      enum: [work, home, personal]
+      example: personal
+  - name: isFavourite
     in: query
     required: false
     schema:
@@ -28,24 +48,10 @@ parameters:
 
 responses:
   '200':
-    description: Paginated contact list
+    description: Contacts retrieved successfully
     content:
       application/json:
         schema:
-          type: object
-          properties:
-            message:
-              type: string
-              example: 'Contacts retrieved successfully'
-            total:
-              type: integer
-            page:
-              type: integer
-            limit:
-              type: integer
-            contacts:
-              type: array
-              items:
-                $ref: ../../components/schemas/Contact.yaml
+          $ref: ../../components/responses/PaginatedContacts.yaml
   '401':
     $ref: ../../components/responses/Unauthorized.yaml

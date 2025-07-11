@@ -2,16 +2,26 @@ type: object
 properties:
   name:
     type: string
-    example: 'Updated Name'
+    minLength: 3
+    maxLength: 20
+    example: 'Alice Smith'
+  phoneNumber:
+    type: string
+    minLength: 3
+    maxLength: 20
+    example: '+380123456789'
   email:
     type: string
-    example: 'updated@example.com'
-  phone:
+    minLength: 3
+    maxLength: 20
+    example: 'alice@example.com'
+  contactType:
     type: string
-    example: '+380987654321'
-  avatar:
-    type: string
-    format: binary
-  favorite:
+    enum: [work, home, personal]
+    example: 'personal'
+  isFavourite:
     type: boolean
     example: true
+  photo:
+    type: string
+    format: binary
